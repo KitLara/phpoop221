@@ -12,6 +12,7 @@ if (isset($_POST['sg'])) {
   $username = $_POST['user'];
   $password = $_POST['pass'];
   $confirm = $_POST['confirm'];
+
  
   if($password == $confirm) {
     if ($con->signupUser($firstname, $lastname, $birthday, $sex, $username, $password)) {

@@ -21,7 +21,7 @@ if (isset($_POST['multisave'])) {
 
     if ($password == $confirm) {
         // Passwords match, proceed with signup
-        $user_id = $con->signupUser($firstName,  $lastName, $birthday, $sex, $username, $password); // Insert into users table and get user_id
+        $user_id = $con->signupUser($firstName,  $lastName, $birthday, $sex, $email, $username, $password, $profilePicture); // Insert into users table and get user_id
         if ($user_id) {
             // Signup successful, insert address into users_address table
             if ($con->insertAddress($user_id, $street, $barangay, $city, $province)) {
@@ -71,7 +71,9 @@ if (isset($_POST['multisave'])) {
 <div class="container custom-container rounded-3 shadow my-5 p-3 px-5">
   <h3 class="text-center mt-4"> Registration Form</h3>
   <form method = "post"> 
-    <!-- Personal Information -->
+
+  <!-- Personal Information -->
+
     <div class="card mt-4">
       <div class="card-header bg-info text-white">Personal Information</div>
       <div class="card-body">

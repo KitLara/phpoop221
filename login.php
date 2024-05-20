@@ -1,32 +1,22 @@
 <?php
 
 require_once('classes/database.php');
-
 $con = new database();
 session_start();
-if (isset($_SESSION['user'])){
-  header('location:index.php');
-}
 
+$error = ""; // Initialize error variable
 
 if (isset($_POST['Login'])) {
   $username = $_POST['user'];
   $password = $_POST['pass'];
   $result = $con->check($username, $password);
-
-
-if ($result) {
-  if ($result['user'] == $_POST['user'] && $result['pass'] == $_POST['pass']) {
-    $_SESSION['user'] = $result['user'];
-  
-    header('location:index.php');
-    
-} else {
-    echo 'Incorrect username or password. Please try again';
-}
-} else {
-  echo 'Error occured while logging in ';
-}
+ 
+  if ($result) {
+      $_SESSION['user'] = $result['user'];
+      header('location:index.php');
+  } else {
+      $error = "Incorrect username or password. Please try again.";
+  }
 }
 
 ?>

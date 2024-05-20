@@ -6,12 +6,26 @@ class database
         return new PDO('mysql:host=localhost;dbname=phpoop221','root','');
     }
  
-    function check($username,$password){
+    function check($username, $password) {
+        // Open database connection
         $con = $this->opencon();
-        $query = "SELECT * from users WHERE user='".$username. "'&&pass='".$password."'";
-        return $con->query($query)->fetch();
+    
+        // Prepare the SQL query
+        $stmt = $con->prepare("SELECT * FROM users WHERE user = ?");
+        $stmt->execute([$username]);
+    
+        // Fetch the user data as an associative array
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        // If a user is found, verify the password
+        if ($user && password_verify($password, $user['pass'])) {
+            return $user;
+        }
+    
+        // If no user is found or password is incorrect, return false
+        return false;
     }
-    function signup($firstname, $lastname, $birthday, $sex, $username, $password){
+    function signup($firstname, $lastname, $birthday, $sex, $email, $username, $password,  $profilePicture){
         $con = $this->opencon();
         $query = $con->prepare("SELECT user FROM users WHERE user= ?");
         $query->execute([$username]);
@@ -21,21 +35,15 @@ class database
             return false;
         }
 
-        return $con->prepare("INSERT INTO users (firstname, lastname, birthday, sex, user, pass) VALUES (?, ?, ?, ?, ?, ?)")
-        ->execute([$firstname, $lastname, $birthday, $sex, $username, $password]);
+        return $con->prepare("INSERT INTO users (firstname, lastname, birthday, sex, user, pass, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)")
+        ->execute([$firstname, $lastname, $birthday, $sex, $email, $username, $password, $profilePicture]);
     }
-        function signupUser($firstname, $lastname, $birthday, $sex, $name, $pass) {
-            $con = $this->opencon();
-            $query = $con->prepare("SELECT user FROM users WHERE user= ?");
-            $query->execute([$name]);
-            $existingUser = $query->fetch();
-       
-            if ($existingUser) {
-                return false;
-            }
-       
-            $con->prepare("INSERT INTO users (firstname, lastname, birthday, sex, user, pass) VALUES (?, ?, ?, ?, ?, ?)")->execute([$firstname, $lastname, $birthday, $sex, $name, $pass]);
-            return $con->lastInsertId();
+    function signupUser($firstname, $lastname, $birthday, $sex, $username, $password)
+    {
+        $con = $this->opencon();
+        // Save user data along with profile picture path to the database
+        $con->prepare("INSERT INTO users (firstname, lastname, birthday, sex, user, pass) VALUES (?,?,?,?,?,?)")->execute([$firstname, $lastname, $birthday, $sex, $username, $password,]);
+        return $con->lastInsertId();
         }
        
         function insertAddress($user_id, $street, $barangay, $city, $province) {
@@ -45,7 +53,7 @@ class database
     }
         function view (){
             $con = $this->opencon();
-            return $con -> query("SELECT users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, CONCAT(user_address.user_street,' ', user_address.user_barangay,' ', user_address.user_city,' ', user_address.user_province) AS Address FROM user_address INNER JOIN users ON users.user_id = user_address.user_id;") -> fetchAll();
+            return $con -> query("SELECT users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, users.profile_picture, CONCAT(user_address.user_street,' ', user_address.user_barangay,' ', user_address.user_city,' ', user_address.user_province) AS Address FROM user_address INNER JOIN users ON users.user_id = user_address.user_id;") -> fetchAll();
     }
     function delete($id){
         try{
@@ -66,7 +74,7 @@ class database
         try{
             $con = $this->opencon();
             $query=$con->prepare("SELECT
-            users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, users.pass, user_address.user_street, user_address.user_barangay, user_address.user_city, user_address.user_province FROM user_address INNER JOIN users ON user_address.user_id = users.user_id WHERE users.user_id=?");
+            users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, users.pass, users.profile_picture, user_address.user_street, user_address.user_barangay, user_address.user_city, user_address.user_province FROM user_address INNER JOIN users ON user_address.user_id = users.user_id WHERE users.user_id=?");
             $query->execute([$id]);
             return $query->fetch();
             }
