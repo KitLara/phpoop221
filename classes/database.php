@@ -38,14 +38,15 @@ class database
         return $con->prepare("INSERT INTO users (firstname, lastname, birthday, sex, user, pass, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)")
         ->execute([$firstname, $lastname, $birthday, $sex, $email, $username, $password, $profilePicture]);
     }
-    function signupUser($firstname, $lastname, $birthday, $sex, $username, $password)
+
+    function signupUser($firstname, $lastname, $birthday, $sex, $email, $username, $password, $profilePicture)
     {
         $con = $this->opencon();
         // Save user data along with profile picture path to the database
-        $con->prepare("INSERT INTO users (firstname, lastname, birthday, sex, user, pass) VALUES (?,?,?,?,?,?)")->execute([$firstname, $lastname, $birthday, $sex, $username, $password,]);
+        $con->prepare("INSERT INTO users (firstname, lastname, birthday, sex, email, user, pass, user_profile_picture) VALUES (?,?,?,?,?,?,?,?)")->execute([$firstname, $lastname, $birthday, $sex, $email, $username, $password, $profilePicture]);
         return $con->lastInsertId();
         }
-       
+    
         function insertAddress($user_id, $street, $barangay, $city, $province) {
             $con = $this->opencon();
      
@@ -53,7 +54,7 @@ class database
     }
         function view (){
             $con = $this->opencon();
-            return $con -> query("SELECT users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, users.profile_picture, CONCAT(user_address.user_street,' ', user_address.user_barangay,' ', user_address.user_city,' ', user_address.user_province) AS Address FROM user_address INNER JOIN users ON users.user_id = user_address.user_id;") -> fetchAll();
+            return $con -> query("SELECT users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, users.user_profile_picture, CONCAT(user_address.user_street,' ', user_address.user_barangay,' ', user_address.user_city,' ', user_address.user_province) AS Address FROM user_address INNER JOIN users ON users.user_id = user_address.user_id;") -> fetchAll();
     }
     function delete($id){
         try{
@@ -74,7 +75,7 @@ class database
         try{
             $con = $this->opencon();
             $query=$con->prepare("SELECT
-            users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, users.pass, users.profile_picture, user_address.user_street, user_address.user_barangay, user_address.user_city, user_address.user_province FROM user_address INNER JOIN users ON user_address.user_id = users.user_id WHERE users.user_id=?");
+            users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, users.pass, users.user_profile_picture, user_address.user_street, user_address.user_barangay, user_address.user_city, user_address.user_province FROM user_address INNER JOIN users ON user_address.user_id = users.user_id WHERE users.user_id=?");
             $query->execute([$id]);
             return $query->fetch();
             }
@@ -96,7 +97,7 @@ class database
     function updateUserAddress($id, $street, $barangay, $city, $province) {
         try{
             $con = $this->opencon();
-            $query= $con->prepare("UPDATE user_address SET user_street=?, user_barangay=?, user_city=?, user_province=? WHERE user_id=?");
+            $query= $con->prepare("UPDATE user_address SET user_street=?, user_barangay=?, user_city=?, user_province=?  WHERE user_id=?");
             return $query->execute([$street, $barangay, $city, $province, $id]);
             //Update Successful
         } catch (PDOException $e) {

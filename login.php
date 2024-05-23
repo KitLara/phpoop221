@@ -54,7 +54,7 @@ if (isset($_POST['Login'])) {
     <div class="row gx-1">
 
     <div class="col"><input type="submit" value="Login" class="btn btn-primary btn-block" name="Login"></div>
-    <div class="col"><a class="btn btn-danger btn-block" href="multisave.php">Signup</a></div>
+    <div class="col"><a class="btn btn-danger btn-block" href="register.php">Signup</a></div>
     </div>
     
 
