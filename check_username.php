@@ -1,11 +1,11 @@
 <?php
 require_once('classes/database.php');
 
-if (isset($_POST['username'])) {
-    $username = $_POST['username']; 
+if (isset($_POST['user'])) {
+    $username = $_POST['user']; 
     $con = new database();
 
-    $query = $con->opencon()->prepare("SELECT user FROM users WHERE user = ?");
+    $query = $con->opencon()->prepare("SELECT user FROM userss WHERE user = ?");
     $query->execute([$username]);
     $existingUser = $query->fetch();
 

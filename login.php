@@ -3,6 +3,9 @@
 require_once('classes/database.php');
 $con = new database();
 session_start();
+if (isset($_SESSION['user'])) {
+  header('location: index.php');
+}
 
 $error = ""; // Initialize error variable
 
@@ -13,11 +16,20 @@ if (isset($_POST['Login'])) {
  
   if ($result) {
       $_SESSION['user'] = $result['user'];
+      $_SESSION['user_id'] = $result['user_id'];
+      $_SESSION['profile_picture'] = $result['user_profile_picture'];
+      $_SESSION['account_type'] = $result['account_type'];
+      //Redirect based on account type
+      if ($result['account_type'] == '0') {
       header('location:index.php');
+  } else if($result['account_type']==1) {
+      header('location:user_account.php');
+  }
+  exit();
   } else {
       $error = "Incorrect username or password. Please try again.";
   }
-}
+  }
 
 ?>
 <!DOCTYPE html>

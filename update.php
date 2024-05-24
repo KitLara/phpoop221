@@ -22,7 +22,7 @@ if(empty($id)) {
 
 if (isset($_POST['Update'])) {
     $id = $_POST['id'];  
-    $firstName = $_POST['f_name'];
+    $firstName = $_POST['firstname'];
     $lastName = $_POST['lastname'];
     $birthday = $_POST['birthday'];
     $sex = $_POST['sex'];
@@ -94,7 +94,7 @@ if ($password==$confirm) {
         <div class="form-row">
           <div class="form-group col-md-6 col-sm-12">
             <label for="firstName">First Name:</label>
-            <input type="text" class="form-control" name="f_name"  value="<?php echo $rows['firstname'];?> " placeholder="Enter first name">
+            <input type="text" class="form-control" name="firstname"  value="<?php echo $rows['firstname'];?> " placeholder="Enter first name">
           </div>
 
           <div class="form-group col-md-6 col-sm-12">

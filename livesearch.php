@@ -24,13 +24,13 @@ try {
     $offset = ($currentPage - 1) * $recordsPerPage;
 
     // Get the total number of records
-    $totalQuery = $connection->prepare("SELECT COUNT(*) AS total FROM users");
+    $totalQuery = $connection->prepare("SELECT COUNT(*) AS total FROM userss");
     $totalQuery->execute();
     $totalRecords = $totalQuery->fetch(PDO::FETCH_ASSOC)['total'];
     $totalPages = ceil($totalRecords / $recordsPerPage);
 
     // Fetch users for the current page
-    $query = $connection->prepare("SELECT users.user_id, users.firstname, users.lastname, users.birthday, users.sex, users.user, users.user_profile_picture, CONCAT(user_address.user_city, ', ', user_address.user_province) AS address FROM users INNER JOIN user_address ON users.user_id = user_address.user_id LIMIT :offset, :recordsPerPage");
+    $query = $connection->prepare("SELECT userss.user_id, userss.firstname, userss.lastname, userss.birthday, userss.sex, userss.user, userss.user_profile_picture, CONCAT(users_address.user_city, ', ', users_address.user_province) AS address FROM userss INNER JOIN users_address ON userss.user_id = users_address.user_id LIMIT :offset, :recordsPerPage");
     $query->bindParam(':offset', $offset, PDO::PARAM_INT);
     $query->bindParam(':recordsPerPage', $recordsPerPage, PDO::PARAM_INT);
     $query->execute();

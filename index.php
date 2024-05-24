@@ -4,9 +4,10 @@
 
     $con = new database();
     session_start();
-    if(empty($_SESSION['user'])) {
-        header('location:login.php');
-    }
+    // if (!isset($_SESSION['user']) || $_SESSION['account_type'] != 0) {
+    //     header('location:login.php');
+    //     exit();
+    //   }
 
     if(isset($_POST['delete'])){
         $id = $_POST['id'];
