@@ -96,7 +96,7 @@ if (isset($_POST['updateaddress'])) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
  
   <!-- For Pop Up Notification -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="./package/dist/sweetalert2.css">
  
   <style>
     .profile-header {
@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script><!-- Password Validation Logic Ends Here -->
  
 <!-- SweetAlert2 Script For Pop Up Notification -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="./package/dist/sweetalert2.min.js"></script>
  
 <!-- After the message is shown the whole website will be reloaded and the query parameters after the url will be removed so that the message only appear once. -->
 <!-- Pop Up Messages after a succesful transaction starts here --> <script>

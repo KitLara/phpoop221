@@ -93,13 +93,18 @@ class database
             return false; // Update failed
     }   
 }
-    function updateUserAddress($id, $street, $barangay, $city, $province) {
+    function updateUserAddress($user_id, $street, $barangay, $city, $province) {
         try{
             $con = $this->opencon();
-            $query= $con->prepare("UPDATE user_address SET user_street=?, user_barangay=?, user_city=?, user_province=?  WHERE user_id=?");
-            return $query->execute([$street, $barangay, $city, $province, $id]);
+            $con-> beginTransaction();
+            $query= $con->prepare("UPDATE users_address SET user_street=?, user_barangay=?, user_city=?, user_province=?  WHERE user_id=?");
+            $query->execute([$street, $barangay, $city, $province, $user_id]);
+            $con->commit();
+            return true;
+        }
             //Update Successful
-        } catch (PDOException $e) {
+            catch (PDOException $e) {
+            $con->rollBack();
             //Handle the exception
             return false; // Update failed
 }
