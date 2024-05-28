@@ -94,6 +94,7 @@ if ($password==$confirm) {
         <div class="form-row">
           <div class="form-group col-md-6 col-sm-12">
             <label for="firstName">First Name:</label>
+            <?php  $rows = $con->viewData($id);?>
             <input type="text" class="form-control" name="firstname"  value="<?php echo $rows['firstname'];?> " placeholder="Enter first name">
           </div>
 
